@@ -1,0 +1,153 @@
+"""Custom input and output of variables."""
+from enum import Enum
+
+
+class TextBlockType(Enum):
+    """Types of text blocks."""
+    DEFAULT = 0
+    INFO = 1
+    INPUT = 2
+    ERROR = 3
+
+
+class IndentationController:
+    """System that controls indentations between text blocks."""
+
+
+    def __init__(self,previous_text_block_type=TextBlockType.DEFAULT):
+        self.previous_text_block_type = previous_text_block_type
+
+
+    def try_add_indentation(self,text_block_type):
+        """Adds indentation between text blocks if it's need."""
+        if (self.previous_text_block_type in \
+            [TextBlockType.INFO,TextBlockType.INPUT, \
+            TextBlockType.ERROR]) and \
+            (text_block_type in [TextBlockType.INFO, \
+            TextBlockType.INPUT,TextBlockType.DEFAULT]):
+            print()
+        if text_block_type == TextBlockType.ERROR:
+            if self.previous_text_block_type == TextBlockType.ERROR:
+                print("----------AND----------")
+            else:
+                print("-----------+-----------")
+
+        self.previous_text_block_type = text_block_type
+
+
+    def get_input_parameter(self,param_name, str_conversion,
+                        cancel_word = 'x'):
+        """Firstly the function will show name of input parameter, 
+        then the user should type value of parameter,
+        after this if the value is correct the function
+        will return converted parameter 
+        in other case the function will throw value error."""
+
+        self.try_add_indentation(TextBlockType.INPUT)
+
+        input_string = input(f'{param_name} = ')
+        if input_string == cancel_word:
+            raise StopProgramException
+
+        parameter = str_conversion(input_string)
+        return parameter
+
+
+    def get_input_array(self,array_name,
+                        str_conversion,
+                        separator = ',',
+                        cancel_word = 'x'):
+        """Firstly the function will show name of the array, 
+        then the user should type 
+        values of the elements separated by the separator,
+        after this if the values are correct the function
+        will return converted elements as array
+        in other case the function will throw ValueError."""
+
+        self.try_add_indentation(TextBlockType.INPUT)
+
+        print(f'{array_name}:')
+
+        input_string = input()
+        if input_string == cancel_word:
+            raise StopProgramException
+
+        str_elements = input_string.split(separator)
+
+        array = [str_conversion(elem) \
+            for elem in str_elements]
+
+        return array
+
+
+    def print_variable(self,variable_name,variable_value):
+        """Prints name of variable and it's value."""
+        self.try_add_indentation(TextBlockType.INFO)
+
+        print(f"{variable_name} = {str(variable_value)}")
+
+
+    def print_array(self,array_name,array):
+        """Prints name of array and it's values."""
+        self.try_add_indentation(TextBlockType.INFO)
+        array_as_str = ' '.join(map(str,array))
+
+        output_str = f'{array_name}:\n{array_as_str}'
+        print(output_str)
+
+
+    def print_exception(self,ex):
+        """Prints exception message."""
+        self.try_add_indentation(TextBlockType.ERROR)
+        print(ex)
+
+
+    def print_text(self,text,header=None):
+        """Prints text."""
+        self.try_add_indentation(TextBlockType.INFO)
+        if not header is None:
+            print(f"{header}:")
+        print(text)
+
+
+class StopProgramException(Exception):
+    """The exception will be thrown when the user decides to stop typing."""
+
+    def __init__(self):
+        super().__init__('Program was stopped.')
+
+
+class BackToPreviousException(Exception):
+    """The exception will be thrown when the user decides to come back
+    to the previous menu."""
+
+    def __init__(self,message=None,
+                 value_to_return=None):
+        if message is None:
+            super().__init__('You are back to the previous menu.')
+        else:
+            super().__init__(message)
+        if value_to_return is None:
+            value_to_return = []
+        self.value_to_return = value_to_return
+
+
+def loop(func):
+    """Loops a function with the ability
+    to stop the loop. There is exception handling."""
+    def new_func(indent_contr,is_main,**kwargs):
+        while True:
+            try:
+                func(indent_contr,is_main,**kwargs)
+            except StopProgramException as ex:
+                if is_main:
+                    indent_contr.print_exception(ex)
+                break
+            except BackToPreviousException as ex:
+                indent_contr.print_exception(ex)
+                return ex.value_to_return
+            except Exception as ex:
+                indent_contr.print_exception(ex)
+        return None
+
+    return new_func
