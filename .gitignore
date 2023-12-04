@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 .vs
+/.vs/markdown/v17/.suo
