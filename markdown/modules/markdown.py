@@ -76,7 +76,7 @@ def replace_with_tags(s:str,tags:list[Tag]):
         for delta in deltas:
             delta[0] = tag
             current_tags.append(delta)
-        
+
     result = ""
     prev_start = 0
     tags = []

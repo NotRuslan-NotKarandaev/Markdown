@@ -134,11 +134,11 @@ def get_formatted_words(words):
     return words
 
 
-def index(array,element):
+def safe_index(array:list,element):
     """Returns index of first
     the left element in array that matches
     given element. Returns -1 if it fails."""
     try:
-        return array.index()
-    except:
+        return array.index(element)
+    except ValueError:
         return -1
