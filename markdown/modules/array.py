@@ -132,3 +132,13 @@ def get_formatted_words(words):
         word = word.replace("_"," ")
         words[_i] = word[0].upper() + word[1:]
     return words
+
+
+def index(array,element):
+    """Returns index of first
+    the left element in array that matches
+    given element. Returns -1 if it fails."""
+    try:
+        return array.index()
+    except:
+        return -1

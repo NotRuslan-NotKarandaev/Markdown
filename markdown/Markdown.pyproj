@@ -22,12 +22,14 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="menu.py" />
-    <Compile Include="menu_cmds.py" />
+    <Compile Include="menus.py" />
+    <Compile Include="menus_cmds.py" />
+    <Compile Include="modules\markdown.py" />
+    <Compile Include="modules\string.py" />
     <Compile Include="modules\__init__.py" />
-    <Compile Include="modules\o_array.py" />
-    <Compile Include="modules\o_io.py" />
-    <Compile Include="modules\o_number.py" />
+    <Compile Include="modules\array.py" />
+    <Compile Include="modules\io.py" />
+    <Compile Include="modules\number.py" />
     <Compile Include="__init__.py" />
     <Compile Include="__main__.py" />
   </ItemGroup>

@@ -1,5 +1,6 @@
 """Custom input and output of variables."""
 from enum import Enum
+from modules import number
 
 
 class TextBlockType(Enum):
@@ -46,6 +47,16 @@ class IndentationController:
                 print("-----------+-----------")
 
         self.previous_text_block_type = text_block_type
+
+
+    def try_get_command_code(self,end,start = 1):
+        """Tries to get command code which was typed by user.
+        If the code isn't in the specified range inclusive 
+        the function throws Value Error."""
+        command_code = self.get_input_parameter('Command code',int)
+        number.check_if_number_is_in_range(command_code,start, \
+            end,"Command code")
+        return command_code
 
 
     def get_input_parameter(self,param_name, str_conversion,
@@ -143,18 +154,24 @@ class BackToPreviousException(Exception):
         self.value_to_return = value_to_return
 
 
-def loop(is_main=True,docs:function=None):
+def loop(is_main=True,cmds_number=0,
+         docs=None):
     """Loops a function with the ability
     to stop the loop. There is exception handling.
     You also can specify if this loop is main
     and add function that prints docs of the loop."""
     def wrap(func):
-        def loop(indent_contr,**kwargs):
+        def loop(indent_contr,code=None,**kwargs):
             if not docs is None:
                 docs(indent_contr)
             while True:
                 try:
-                    result = func(indent_contr,**kwargs)
+                    code = indent_contr.try_get_command_code(cmds_number)
+                    if code == 1 and (not docs is None):
+                        docs(indent_contr)
+                    result = func(indent_contr,code,**kwargs)
+                    if not isinstance(result,Wrapper):
+                        continue
                     match result.r_type:
                         case ResponseType.EXIST:
                             raise StopProgramException
@@ -172,8 +189,8 @@ def loop(is_main=True,docs:function=None):
                     result = Wrapper(ex.value_to_return,
                                      ResponseType.BACK)
                     return result
-                except Exception as ex:
-                    indent_contr.print_exception(ex)
+                #except Exception as ex:
+                #    indent_contr.print_exception(ex)
 
         return loop
     return wrap

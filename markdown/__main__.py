@@ -1,8 +1,7 @@
 """Start of program."""
-from modules import o_io
-from modules import models as m
-import menu
+from modules import io
+import menus
 
 
-indent_contr = o_io.IndentationController()
-menu.main(indent_contr)
+indent_contr = io.IndentationController()
+menus.main(indent_contr)
