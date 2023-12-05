@@ -88,7 +88,8 @@ def replace_with_tags(s:str,tags:list[Tag]):
     for tag in tags:
         result += s[prev_start:tag[0]] + tag[1]
         prev_start = tag[0] + len(tag[2])
-    prev_start = tags[-1][0] + len(tags[-1][2])
+    if len(tags) > 0:
+        prev_start = tags[-1][0] + len(tags[-1][2])
     result += s[prev_start:]
     return result
 
