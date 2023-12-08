@@ -7,5 +7,5 @@ def print_main_cmds(indent_contr):
         print_text('Press "x" to stop program.\n\n'
         "Types of commands and their codes:\n"
         '1 - help;\n'
-        '2 - get formatted string;\n'
-        '3 - get formatted string (Does not work right).')
+        '2 - get formatted string (original);\n'
+        '3 - get formatted string (my).')
