@@ -25,7 +25,6 @@
     <Compile Include="menus.py" />
     <Compile Include="menus_cmds.py" />
     <Compile Include="modules\markdown.py" />
-    <Compile Include="modules\string.py" />
     <Compile Include="modules\__init__.py" />
     <Compile Include="modules\array.py" />
     <Compile Include="modules\io.py" />
