@@ -58,4 +58,5 @@ Markdown - это легкий и простой в использовании �
 
 - изображения
 
-например, это  ![изображение кота](https://upload.wikimedia.org/wikipedia/commons/1/15/Cat_August_2010-4.jpg)
+например, это  
+![изображение кота](https://th.bing.com/th/id/OIP.wafn1VcPBPrAieOn3gsKCAHaEK?rs=1&pid=ImgDetMain)
